@@ -1,0 +1,273 @@
+% ----------------- Reporte del documento ---------------------
+%                Plantilla para los talleres
+% -------------------------------------------------------------
+\documentclass[12pt,a4paper,fleqn]{article}
+\usepackage[a4paper,bindingoffset=0.2in,%
+            left=1in,right=1in,top=1in,bottom=1in,%
+            footskip=.25in]{geometry}
+\usepackage[utf8]{inputenc} % Requerido para incluir letras con acentos.
+\usepackage[T1]{fontenc}    % Complemento del anterior.
+\usepackage[spanish]{babel} % Etiquetas en español.
+
+% ---------------------------------------------------------------------------------------
+%	Algunas definiciones de estilos
+% ---------------------------------------------------------------------------------------
+\usepackage[table,xcdraw,dvipsnames]{xcolor}         % Permite especificar colores por su nombre y no solo por código RGB.
+\definecolor{ocre}{RGB}{206,172,160}
+\definecolor{Codigo}{gray}{0.95}
+\definecolor{Resaltado}{RGB}{217, 196, 167}
+\colorlet{LightGray}{Gray!50!}
+\colorlet{LightYellow}{Resaltado!50!}
+
+% ---------------------------------------------------------------------------------------
+%	Importación de paquetes y otras configuraciones
+% ---------------------------------------------------------------------------------------
+\usepackage{amsmath}                    % Zona matemática.
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\newcommand{\sym}[1]{#1}
+\usepackage{graphicx}                   % Requerido para incluir gráficas.
+\usepackage{xparse}
+\usepackage{listings}                   % Complemento del anterior.
+\usepackage[labelfont=bf,labelsep=period,justification=centering]{caption}		            % Modificar los nombres de los objetos.
+\usepackage[labelformat=simple]{subcaption}                 % Permite incluir múltiples gráficas en una única figura.
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage{multicol}                   % Permite agregar múltiples columnas.
+\usepackage{multirow}
+\usepackage[11pt]{moresize}	            % Permite incluir tamaño de letra \ssmall.
+\usepackage{newtxtext,newtxmath}        % Usa la fuente Adobe Times Roman como el valor por defecto, junto con los símbolos matemáticos.
+\usepackage{microtype}                  % Ligero retoque que mejora la apariencia.
+\usepackage{flushend}                   % Para igualar las columnas de la altima pagina
+\usepackage{enumitem}
+\setlist[enumerate,1]{label=\arabic*)}
+\setlist[enumerate,2]{label=\textit{\alph*})}
+\setlist[enumerate,3]{label=\roman*)}
+\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
+\usepackage{tikz}                       % Permite insertar gráficos personalizados.
+\usepackage{fancyhdr}                   % Permite configurar el encabezado y las márgenes.
+\usepackage{booktabs}                   % Permite incrustar líneas horizontales en las tablas.
+\usepackage{avant}                      % Letra más estética.
+\usepackage{dsfont}
+\usepackage{float}                      % Imágenes flotantes.
+\usepackage{enumitem}                   % Permite modificar la enumeración.
+\setlist[itemize,1]{label=$\bullet$}    % Modificación del primer nivel.
+\usepackage{cancel}                     % Permite cancelar términos.
+\usepackage{csquotes}                   % Necesario para la bibliografía.
+% \usepackage[none]{hyphenat}
+\raggedbottom
+
+% ---------------------------------------------------------------------------------------
+%	Título del documento e integrantes del grupo
+% ---------------------------------------------------------------------------------------
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
+\title{
+\horrule{0.5pt} \\           % Delgada línea horizontal superior.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lc}
+		\multirow{2}{*}{\includegraphics[scale=0.9]{Figuras/Andes.png}} & \textbf{Predicción del Ingreso}\\
+		% & Big Data y Machine Learning para Economía Aplicada, 2023-2\\
+		& \textbf{Profesor:} Ignacio Martin Sarmiento Barbieri
+	\end{tabular}	
+\end{table}
+\horrule{2pt} \\ [0.5cm]            % Gruesa línea horizontal inferior.
+}
+
+\author{}
+
+\date{}
+
+% ---------------------------------------------------------------------------------------
+%	Encabezados elegantes
+% ---------------------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+% Se vacía el encabezado y se redefine.
+\fancyhead[C]{Universidad de los Andes}
+\renewcommand{\headrulewidth}{0.5pt}
+% Se vacía el pie de página y se redefine.
+\fancyfoot[C]{Big Data y Machine Learning para Economía Aplicada}
+\fancyfoot[R]{\thepage}
+\renewcommand{\footrulewidth}{0.5pt}
+% Se define el estilo.
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+% ---------------------------------------------------------------------------------------
+%	Bibliografía
+% ---------------------------------------------------------------------------------------
+\usepackage{hyperref}                   % Hipervínculos.
+\hypersetup{hidelinks,colorlinks=true,linkcolor=Blue,anchorcolor=Blue,citecolor=Blue,filecolor=Blue,urlcolor=Blue,breaklinks=true,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+\usepackage[style=authoryear,citestyle=bwl-FU,sorting=nyt,sortcites=true,autopunct=true,hyperref=true,abbreviate=false,backend=biber,doi=false,isbn=false,url=false,eprint=false]{biblatex}
+\addbibresource{Referencias.bib}
+
+% ---------------------------------------------------------------------------------------
+%	Configuraciones adicionales
+% ---------------------------------------------------------------------------------------
+% 1| Configuración automática de las imágenes.
+% Se posiciona, como valor por defecto, 'H'.
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2]{
+\expandafter\origfigure\expandafter[H]
+}{
+\endorigfigure
+}
+
+% 2| Etiqueta de las figuras.
+% No aparecerán como figura, sino como gráfica.
+\renewcommand{\figurename}{Gráfica}
+
+% 3| Teoremas, corolarios y demás.
+\newtheorem{theorem}{Teorema}       % Teorema.
+\newtheorem{corollary}{Corolario}   % Corolario.
+\newtheorem{lemma}{Lema}            % Lema.
+\newtheorem{remark}{Observación} % Observaciones.
+
+% 4| Códigos.
+\usepackage[newfloat]{minted}% Permite introducir código en el libro. La opción permite definir las etiquetas.
+\setminted{tabsize=2,obeytabs,escapeinside=||,linenos,frame=lines,framesep=2mm,bgcolor=Codigo,fontsize=\scriptsize,breaklines=true}
+\usemintedstyle{trac}		% Estilo de los códigos.
+\usepackage{xparse}
+\usepackage{listings}       % Complemento del anterior.
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Código}
+
+% Tablas más estéticas.
+\newcounter{commentCount}
+\newcounter{filePrg}
+\newcounter{inputPrg}
+
+\usepackage{ifthen}
+\usepackage{fontawesome}
+
+\usepackage{tabularx}
+\newcolumntype{\CeX}{>{\centering\let\newline\\\arraybackslash}X}%
+\newcommand{\TwoSymbolsAndText}[3]{%
+	\begin{tabularx}{\textwidth}{c\CeX c}%
+		#1 & #2 & #3
+	\end{tabularx}%
+}
+
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{minted}
+
+\newtcolorbox[use counter=commentCount, number format=\arabic]{commentBox}[2]{
+	size=title,
+	arc=1.5mm,
+	breakable,
+	enhanced jigsaw,
+	colframe=Black,
+	coltitle=White,
+	boxrule=0.5mm,
+	colback=White,
+	coltext=Black,
+	title=\TwoSymbolsAndText{\faCheck}{%
+		\textbf{Comment \thetcbcounter}\ifthenelse{\equal{#1}{}}{}{\textbf{:} \textit{#1}}%
+	}{\faCheck},
+	label=comment:#2,
+}
+
+\newtcbinputlisting[use counter=filePrg, number format=\arabic]{\codeFromFile}[4]{%
+	listing engine=minted,
+	minted language=#1,
+	listing file={#2},
+	minted options={autogobble,linenos,breaklines},
+	listing only,
+	size=title,
+	arc=1.5mm,
+	breakable,
+	enhanced jigsaw,
+	colframe=brown,
+	coltitle=White,
+	boxrule=0.5mm,
+	colback=white,
+	coltext=Black,
+	title=\TwoSymbolsAndText{\faCode}{%
+		\textbf{Código \thetcbcounter}\ifthenelse{\equal{#3}{}}{}{\textbf{:} \textit{#3}}%
+	}{\faCode},
+	label=filePrg:#4
+}
+
+\newtcblisting[use counter=inputPrg, number format=\arabic]{codeInput}[3]{
+	listing engine=minted,
+	minted language=#1,
+	minted options={autogobble,linenos,breaklines},
+	listing only,
+	size=title,
+	arc=1.5mm,
+	breakable,
+	enhanced jigsaw,
+	colframe=brown,
+	coltitle=White,
+	boxrule=0.5mm,
+	colback=white,
+	coltext=Black,
+	title=\TwoSymbolsAndText{\faCode}{%
+		\textbf{Código \thetcbcounter}\ifthenelse{\equal{#2}{}}{}{\textbf{:} \textit{#2}}%
+	}{\faCode},
+	label=inputPrg:#3
+}
+
+\usepackage{cleveref}
+\crefname{commentCount}{comment}{comments}
+\crefname{filePrg}{file program}{file programs}
+\crefname{inputPrg}{input program}{input programs}
+
+% Ejemplo de lo que se quería lograr:
+% \begin{code}
+%	\caption{Interfaz de usuario.}
+%	\label{Cod:UI}
+%	\codeFromFile{r}{Interfaz.R}{Interfaz de usuario.}{code01}
+% \end{code}
+
+% También es válido:
+% \codeFromFile{r}{Interfaz.R}{Interfaz de usuario.}{code01}
+
+% Directorio de los códigos:
+\ExplSyntaxOn
+\NewDocumentCommand{\mintedpath}{m}
+{
+	\seq_gset_split:Nnn \g_paulie_mintedpath_seq { } { #1 }
+	\seq_gput_left:Nn \g_paulie_mintedpath_seq { }
+}
+
+\seq_new:N \g_paulie_mintedpath_seq
+
+\NewDocumentCommand{\pathinputminted}{O{}mm}
+{
+	\seq_map_inline:Nn \g_paulie_mintedpath_seq
+	{
+		\file_if_exist:nT { ##1 #3 }
+		{
+			\inputminted[#1]{#2}{##1 #3}
+			\seq_map_break:
+		}
+	}
+}
+\ExplSyntaxOff
+
+\mintedpath{ {Codigos/} }
+
+% ---------------------------------------------------------------------------------------
+%	Impresión del documento
+% ---------------------------------------------------------------------------------------
+\begin{document}
+
+    \maketitle
+    \thispagestyle{empty}
+    
+    \vspace*{-3cm}
+    
+    \begin{flushright}
+        Kevin Alberth Martínez Macías -- \\
+        Juan Camilo Obando Martínez -- \\
+        Julián David Rojas Aguilar -- 201924937 \\
+        David Javier Zegarra Florez -- \\
+    \end{flushright}
+    
+    \input{Secciones/Primero}
+    
+\end{document}

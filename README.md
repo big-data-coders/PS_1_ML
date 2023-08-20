@@ -1,7 +1,7 @@
 # PS_1_ML
 Problem set 1 del curso Big Data and Machine Learning para Economía Aplicada
 
-The repo contain four folders:
+The repo contains four folders:
 
 - `document`: contains the final document in `pdf` format. 
 - `scripts`: contains all the scripts

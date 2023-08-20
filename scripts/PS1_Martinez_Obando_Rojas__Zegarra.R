@@ -1,8 +1,8 @@
 ###############################################################
 # Problem set 1 
-# Authors: Martinez, K., Rojas, J., Obando, J.C. & Zegarra, D.
+# Autores: Martinez, K., Rojas, J., Obando, J.C. & Zegarra, D.
+# Materia: Big Data and Machine Learning for Applied Economics
 # Year: 2023
-# Course: Big Data and Machine Learning for Applied Economics
 ###############################################################
 # Set directory
 

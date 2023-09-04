@@ -1,33 +1,32 @@
-###############################################################
-# Problem set 1 
+# Predicting income -------------------------------------------------------
 # Autores: Martinez, K., Rojas, J., Obando, J.C. & Zegarra, D.
 # Materia: Big Data and Machine Learning para Economía Aplicada
 # Año: 2023
-###############################################################
-# Fijo directorio e instalo paquetes
 
+# 1| Preparacion ----------------------------------------------------------
+rm(list = ls())
+graphics.off()
+set.seed(123)                       # Replicabilidad en las simulaciones.
 
-local_dav <- "D:/github/"
-setwd(paste(local_dav,"/PS_1_ML/scripts",sep=""))
-getwd()
+# 1.1| Librerias ----------------------------------------------------------
+librerias    <- c('here', 'tidyverse', 'rvest')
+noInstaladas <- librerias[!(librerias %in% rownames(installed.packages()))]
 
-#**********************************************************
-install.packages("rvest")
-library(pacman)
-library(rvest)
-
-#-------------------------------------------------------------
-# 1. Data
-rm(list=ls())
-
-link <- paste0("https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_", 1:10, ".html")
-link
-
-df <- data.frame()
-for (url in link) {
-  print(url)
-  table0 <- read_html(url) %>%  html_table() 
-  table0 <- as.data.frame(table0[[1]])
-  df <- rbind(df, table0)
+if(length(noInstaladas)){
+  install.packages(noInstaladas)
 }
 
+invisible(sapply(librerias, library, character.only = TRUE, quietly = TRUE))
+
+# 1.2| Directorio ---------------------------------------------------------
+directorioPrincipal  = enc2native(here())
+directorioCodigo     = paste0(directorioPrincipal, '/scripts/')
+directorioDatos      = paste0(directorioPrincipal, '/stores/')
+directorioResultados = paste0(directorioPrincipal, '/views/')
+setwd(directorioPrincipal)
+
+# 1.3| Funciones ----------------------------------------------------------
+
+
+# 2| Resultados -----------------------------------------------------------
+source(paste0(directorioCodigo, '01_data.R'), encoding = 'UTF-8')

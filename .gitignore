@@ -1,2 +1,14 @@
+# Archivos:
+# - De R.
+*.Rhistory
+.Rproj.user
 
-scripts/.Rhistory
+# - De LaTeX.
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.log
+*.out
+*.xml
+*.gz

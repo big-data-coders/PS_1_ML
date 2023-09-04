@@ -29,4 +29,8 @@ setwd(directorioPrincipal)
 
 
 # 2| Resultados -----------------------------------------------------------
+# Al definir 'primeraVez := TRUE', se realiza el análisis desde ceros. Esto
+# incluye descargar, nuevamente, la base de datos desde la página de Ignacio.
+# Dado que el proceso es demorado se recomienda definir el parámetro en FALSE.
+primeraVez <- FALSE
 source(paste0(directorioCodigo, '01_data.R'), encoding = 'UTF-8')

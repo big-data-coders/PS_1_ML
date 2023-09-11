@@ -23,6 +23,72 @@ if (primeraVez <- TRUE) {
   dataset <- read.csv(file = paste0(Directoriodatos, 'dataframe.csv'))
 }
 
+___________________________________________________________________________________________________________________________________
+
+#comienzo por observar los datos instalando de igual fomra paquetes para ello 
+
+install.packages("skimr")
+library(skimr)
+
+dataset%>%head()
+
+names(dataset)
+str(dataset)
+summary(dataset)
+# vista previa de los datos 
+
+------------------------------------------------------------------------------------------------------------------------------------
+#detectar valores nulos y numero de datos nulos 
+  
+colSums(is.na(dataset))
+total_na <- sum(is.na(dataset))
+print(total_na)
+
+
+
+
+
+
+
+
+
+
+
+
+#estat describ
+
+#summary(dataset)
+
+#num filas / columnas 
+
+#num_filas <- nrow(dataset)
+#num_columnas <- nrow(dataset)
+
+#resultado 
+
+#print(paste("numero de filas", num_filas))
+#print(paste("numero de columnas", num_columnas))
+
+
+
+#
+
+
+
+
+
+
+
+
+
+
+#Restringir variable age en los datos apartir de 18 años 
+
+#install.packages("dplyr")
+#library(dplyr)
+
+#dataset_filtrado <- dataset %>% filter (age >=18)
+
 
 
 

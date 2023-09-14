@@ -22,55 +22,54 @@ if (primeraVez == TRUE) {
 #---------------------------------------------------------------------------------
 # Verificamos contenido de los datos
 
-# Revisamos los NAs de la base
-sapply(dataset, function(x) sum(is.na(x)))
-
-summary(dataset)
 # ---------------------
 # Restringimos a mayores o iguales de 18 (edad para trabajar)
-dataset <- dataset %>%  filter(age >= 18 )
+dataset <- dataset %>%  filter(age >= 18 )  ##  ************************* CONFIRMAR
 table(dataset$age)
+
+# Restringimos la información a los trabajadores con ingreso positivo
+dataset <- dataset %>%  filter(y_ingLab_m_ha > 0 )  ##  ************************* CONFIRMAR
+
+
+
+# Dummy de jef(a) de hogar
+dataset$jefx_hog <- ifelse(dataset$p6050 == 1, 1, 0)
+# Dummy de pareja, esposo(a), cónyuge
+dataset$pareja <- ifelse(dataset$p6050 == 2, 1, 0)
+# Dummy de hijo de jefe de hogar
+dataset$hijx_hog <- ifelse(dataset$p6050 == 3, 1, 0)
+
 
 # Generamos datos para los problemas 2 y 3
 # edad al cuadrado
 dataset <- dataset %>% mutate( age2 = age * age)
-dataset$age[1]
-dataset$age2[1]
+
+# Dummy de sexo femenino 
+dataset$female <- ifelse(dataset$sex == 0, 1, 0)
+
+# Dummy por tipo de trabajo
+dataset$obrero_particular <- ifelse(dataset$relab == 1, 1, 0)
+dataset$obrero_gobierno <- ifelse(dataset$relab == 2, 1, 0)
+dataset$empleado_domestico <- ifelse(dataset$relab == 3, 1, 0)
+dataset$self_employed <- ifelse(dataset$relab == 4, 1, 0)
+dataset$patron_empleador <- ifelse(dataset$relab == 5, 1, 0)
+dataset$worker_fam_nowage <- ifelse(dataset$relab == 6, 1, 0)
+dataset$worker_comp_nowage <- ifelse(dataset$relab == 7, 1, 0)
+dataset$jornalero_peon <- ifelse(dataset$relab == 8, 1, 0)
+dataset$otro_trabajo <- ifelse(dataset$relab == 9, 1, 0)
+
+# Nos quedamos con las variables a usar
+dataset <- dataset %>% 
+  select(age, age2, clase, orden, directorio, cuentaPropia, depto, estrato1, formal,
+  obrero_particular, obrero_gobierno, empleado_domestico, self_employed, patron_empleador,
+  worker_fam_nowage, worker_comp_nowage, jornalero_peon, otro_trabajo,
+  microEmpresa, jefx_hog, pareja, hijx_hog, p6210s1,female, sizeFirm, y_ingLab_m_ha)
+
+#----------------------------------------------------------------
+summary(dataset)
+
+# Revisamos los NAs de la base
+sapply(dataset, function(x) sum(is.na(x)))
 
 
-# Dummy = 1 si sexo es femenino
-dataset <- dataset %>% mutate(female = case_when(sex == 0 ~ 1, sex == 1 ~ 0) )
-table(dataset$female)
-table(dataset$sex)
-
-
-
-# ---------------------
-# Seleccionar variables relevantes  // COORDINAR! --------+++++++++++++
-  # dataset <- dataset %>% select ()
-
-# Nuevas variables: -------------
-# Ingresos laborales (1er, 2do, y todos los trabajos)
-
-# tipo de trabajo
-
-
-class(dataset$p7510s6)
-?table
-table(dataset$p7510s6) 
-table(dataset$p7510s7a1)
-p7510s7a1 
-
-install.packages("expss")
-library(expss)
-dataset %>%
-  tab_cells(p7510s6, p7510s7a1) %>%
-  tab_stat_fun(Mean = w_mean , "Std. dev." = w_sd, "Valid N"= w_n , "Min" = w_min, "Max" = w_max,  method = list) %>%
-  tab_pivot
-
-table(dataset$oficio)
-
-
-table(dataset$sex)
-dataset$fem <- dataset$sex
 

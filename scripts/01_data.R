@@ -91,3 +91,28 @@ dataset <- dataset |>
 # Nos quedamos con las variables a usar.
 dataset <- dataset |> 
   select(c(starts_with('id_'), starts_with('cat_'), starts_with('num_')))
+
+# 3| Exportar estadística descriptiva -------------------------------------
+dataset |> 
+  select(c(starts_with('cat_'), starts_with('num_'))) |> 
+  tbl_summary(include = everything(),
+              type = starts_with('num_') ~ 'continuous2',
+              label = list(cat_zona ~ 'Área',
+                           cat_estrato ~ 'Estrato socioeconómico',
+                           cat_sexo ~ 'Sexo',
+                           cat_posicion ~ 'Posición dentro del hogar',
+                           cat_educacion ~ 'Nivel educativo más alto alcanzado',
+                           cat_ocupacion ~ 'Ocupación',
+                           cat_formalidad ~ 'Empleo formal o informal',
+                           cat_empresa ~ 'Tamaño de la empresa',
+                           num_edad ~ 'Edad',
+                           num_salarioHora ~ 'Salario por hora'),
+              statistic = list(all_continuous() ~ c("{mean} ({sd})",
+                                                    "({min}, {max})"),
+                               all_categorical() ~ "{n} / {N} ({p}%)"),
+              missing_text = "(Valores faltantes)") |> 
+  add_stat_label(label = list(all_categorical() ~ "",
+                              all_continuous() ~ c("Promedio (Desviación)",
+                                                   "Mínimo y máximo"))) |> 
+  modify_header(label = "**Variable**") |> 
+  bold_labels() 

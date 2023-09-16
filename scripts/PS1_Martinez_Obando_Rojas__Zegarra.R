@@ -9,7 +9,8 @@ graphics.off()
 set.seed(123)                       # Replicabilidad en las simulaciones.
 
 # 1.1| Librerias ----------------------------------------------------------
-librerias    <- c('here', 'tidyverse', 'rvest')
+librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'conflicted',
+                  'rvest')
 noInstaladas <- librerias[!(librerias %in% rownames(installed.packages()))]
 
 if(length(noInstaladas)){
@@ -17,6 +18,9 @@ if(length(noInstaladas)){
 }
 
 invisible(sapply(librerias, library, character.only = TRUE, quietly = TRUE))
+conflict_prefer(name = 'filter', winner = 'dplyr')
+conflict_prefer(name = 'spec', winner = 'yardstick')
+conflict_prefer(name = 'step', winner = 'recipes')
 
 # 1.2| Directorio ---------------------------------------------------------
 directorioPrincipal  = enc2native(here())

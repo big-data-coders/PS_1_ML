@@ -36,6 +36,10 @@ dataset <- dataset |> filter(y_ingLab_m_ha > 0)
 # - DEPTO. Solo se cuenta con las entrevistas para Bogotá, por lo cual no
 #   tomamos la variable como posible predictora.
 
+#creamos dummy de sexo femenino
+dataset$female <- ifelse(dataset$sex == 0, 1, 0)
+dataset$sex <- dataset$female
+
 dataset <- dataset |> 
   mutate(p6050 = case_when(p6050 == 1 ~ 'Jefa o jefe del hogar',
                            p6050 == 2 ~ 'Pareja de la cabeza del hogar',
@@ -51,10 +55,8 @@ dataset <- dataset |>
                            relab == 8 ~ 'Jornalero',
                            relab == 9 ~ 'Otro',
                            TRUE ~ NA_character_)) |> 
-  mutate(sex = case_when(sex == 0 ~ 'Mujer',
-                         sex == 1 ~ 'Hombre')) |> 
-  mutate(clase = case_when(clase == 0 ~ 'Rural',
-                           clase == 1 ~ 'Urbano')) |>
+  mutate(sex = case_when(sex == 0 ~ 'Hombre',
+                         sex == 1 ~ 'Mujer')) |> 
   mutate(estrato1 = case_when(estrato1 == 1 ~ 'Uno',
                               estrato1 == 2 ~ 'Dos',
                               estrato1 == 3 ~ 'Tres',

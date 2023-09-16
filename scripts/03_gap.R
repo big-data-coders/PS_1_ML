@@ -23,10 +23,24 @@ dataset<-dataset %>% mutate(sexResid=lm(cat_sexo~id_vivienda+id_hogar+id_persona
 dataset<-dataset %>% mutate(logyResid=lm(log(num_salarioHora)~id_vivienda+id_hogar+id_persona+cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of logy~x 
 reg3<-lm(logyResid~sexResid,data)
 stargazer(reg1,reg3,type="text",digits=7) 
-stargazer(reg2, digits=7, align=TRUE, type="latex", out="reg2")
+stargazer(reg1,reg3, digits=7, align=TRUE, type="latex", out="reg3")
 
 #Boostrap
 p_load("boot")
+
+eta_fn<-function(data,index){
+  coef(lm(log(num_salarioHora) ~ cat_sexo+id_vivienda+id_hogar+id_persona+cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad, data = dataset, data = data, subset = index))[2] #returns the second coefficient of the linear regression
+}
+
+eta_fn(dataset,1:nrow(dataset))
+
+set.seed(666)
+#call the boot function
+boot(dataset, eta_fn, R = 1000)
+
+
+
+
 
 
 

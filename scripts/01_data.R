@@ -40,6 +40,13 @@ dataset <- dataset |> filter(y_ingLab_m_ha > 0)
 dataset$female <- ifelse(dataset$sex == 0, 1, 0)
 dataset$sex <- dataset$female
 
+# Revisamos si quedan missing values
+  sapply(dataset, function(x) sum(is.na(x)))
+
+# Como es una sola observación missing en nivel educativo más alto, asumimos que no tenía educación
+
+table(dataset$p6210)
+
 dataset <- dataset |> 
   mutate(p6050 = case_when(p6050 == 1 ~ 'Jefa o jefe del hogar',
                            p6050 == 2 ~ 'Pareja de la cabeza del hogar',
@@ -73,14 +80,13 @@ dataset <- dataset |>
                            p6210 == 4 ~ 'Secundaria',
                            p6210 == 5 ~ 'Bachillerato',
                            p6210 == 6 ~ 'Superior',
-                           TRUE ~ NA_character_)) |> 
+                           TRUE ~ 'Ninguno')) |> 
   rename(id_vivienda = directorio,
          id_hogar = secuencia_p,
          id_persona = orden,
          cat_posicion = p6050,
          cat_ocupacion = relab,
          cat_sexo = sex,
-         cat_zona = clase,
          cat_estrato = estrato1,
          cat_formalidad = formal,
          cat_empresa = microEmpresa,
@@ -95,12 +101,11 @@ dataset <- dataset |>
   select(c(starts_with('id_'), starts_with('cat_'), starts_with('num_')))
 
 # 3| Exportar estadística descriptiva -------------------------------------
-dataset |> 
+tbl <- dataset |> 
   select(c(starts_with('cat_'), starts_with('num_'))) |> 
   tbl_summary(include = everything(),
               type = starts_with('num_') ~ 'continuous2',
-              label = list(cat_zona ~ 'Área',
-                           cat_estrato ~ 'Estrato socioeconómico',
+              label = list(cat_estrato ~ 'Estrato socioeconómico',
                            cat_sexo ~ 'Sexo',
                            cat_posicion ~ 'Posición dentro del hogar',
                            cat_educacion ~ 'Nivel educativo más alto alcanzado',
@@ -111,10 +116,15 @@ dataset |>
                            num_salarioHora ~ 'Salario por hora'),
               statistic = list(all_continuous() ~ c("{mean} ({sd})",
                                                     "({min}, {max})"),
-                               all_categorical() ~ "{n} / {N} ({p}%)"),
+                               all_categorical() ~ "{n}  ({p}%)"),  #  / {N}
               missing_text = "(Valores faltantes)") |> 
   add_stat_label(label = list(all_categorical() ~ "",
-                              all_continuous() ~ c("Promedio (Desviación)",
+                              all_continuous() ~ c("Promedio (Desviación std)",
                                                    "Mínimo y máximo"))) |> 
   modify_header(label = "**Variable**") |> 
   bold_labels() 
+
+
+gtsave(as_gt(tbl), filename="stores/tab2.tex")
+  
+

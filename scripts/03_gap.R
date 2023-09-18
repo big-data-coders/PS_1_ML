@@ -18,10 +18,6 @@ reg3<-lm(logyResid~sexResid,dataset)
 stargazer(reg3,type="text",digits=3 ) 
 stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3.tex" , omit.stat = c("adj.rsq", "f", "ser"))
 
-#Boostrap
-
-p_load("boot")
-
 #Acá me surge la duda de si por cada iteración deberían cambiar las columnas de los errores o se usan las que ya tengo como estoy haciendo
 eta_fn<-function(data,index){
   data<-data %>% mutate(sexResid=lm(as.numeric(cat_sexo)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,data)$residuals) #Residuals of sex~x 
@@ -47,11 +43,6 @@ edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia
 
 predicciones0 <- predict(modelo0, newdata = data.frame(num_edad=edades))  # Predicciones
 predicciones1 <- predict(modelo1, newdata = data.frame(num_edad=edades))  # Predicciones
-
-
-#Boostrap
-
-p_load("boot")
 
 dataset0 <- dataset[dataset$cat_sexo == "Hombre",]
 dataset1 <- dataset[dataset$cat_sexo == "Mujer",]

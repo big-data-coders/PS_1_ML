@@ -124,7 +124,4 @@ tbl <- dataset |>
   modify_header(label = "**Variable**") |> 
   bold_labels() 
 
-
 gtsave(as_gt(tbl), filename="stores/tab2.tex")
-  
-

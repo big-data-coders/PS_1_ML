@@ -1,16 +1,8 @@
-#packages
-require("pacman")
-library(fastDummies)
-p_load("tidyverse","stargazer")
-
-glimpse(dataset)
-
 #Tabla con estadísticas descriptivas
 stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Included in the Selected Data Set")
 
 #a) 
 reg1<-lm(log(num_salarioHora) ~ cat_sexo, data = dataset)
-stargazer(reg1, type="text", digits=3 ) 
 stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1.tex" , omit.stat = c("adj.rsq", "f", "ser"))
 
 #b) 

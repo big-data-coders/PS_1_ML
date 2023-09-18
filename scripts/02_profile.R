@@ -66,13 +66,6 @@ dev.off()
 
 
 
-## Presentacion de resultados 
-
-library(gtsummary)
-
-tbl_regression(reg31) %>%
-  add_glance_table() %>%
-  modify_header(label = "**Variable**")  # Personaliza el encabezado si es necesario
 
 
 

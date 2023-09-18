@@ -57,6 +57,18 @@
 % \usepackage[none]{hyphenat}
 \raggedbottom
 
+% \usepackage{rotating} % Requerido para las tablas largas.
+% \usepackage{authblk}
+\usepackage{array}
+\usepackage{tabularray}
+\usepackage{longtable} % Especificaciones para que longtable se comporte adecuadamente.
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\DefTblrTemplate{caption-tag}{default}{\textbf{Tabla\hspace{0.25em}\thetable}}
+\DefTblrTemplate{caption-sep}{default}{\textbf{.}\enskip}
+\DefTblrTemplate{contfoot-text}{default}{Continúa en la próxima página}
+\DefTblrTemplate{conthead-text}{default}{(Continuación)}
+\usepackage{draftfigure}
+
 % ---------------------------------------------------------------------------------------
 %	Título del documento e integrantes del grupo
 % ---------------------------------------------------------------------------------------
@@ -66,9 +78,9 @@
 \begin{table}[H]
 	\centering
 	\begin{tabular}{lc}
-		\multirow{2}{*}{\includegraphics[scale=0.9]{Figuras/Andes.png}} & \textbf{Predicción del Ingreso}\\
-		% & Big Data y Machine Learning para Economía Aplicada, 2023-2\\
-		& \textbf{Profesor:} Ignacio Martin Sarmiento Barbieri
+		\multirow{3}{*}{\includegraphics[scale=0.9]{Figuras/Andes.png}} & \textbf{Predicción del Ingreso}\\
+		& \textbf{Profesor:} Ignacio Martin Sarmiento Barbieri \\
+		& \href{https://github.com/pisco-rolo/PS_1_ML}{Repositorio en Github}
 	\end{tabular}	
 \end{table}
 \horrule{2pt} \\ [0.5cm]            % Gruesa línea horizontal inferior.
@@ -262,12 +274,13 @@
     \vspace*{-3cm}
     
     \begin{flushright}
-        Kevin Alberth Martínez Macías -- \\
-        Juan Camilo Obando Martínez -- \\
+        Kevin Alberth Martínez Macías -- 202214432 \\
+        Juan Camilo Obando Martínez -- 201515899\\
         Julián David Rojas Aguilar -- 201924937 \\
-        David Javier Zegarra Florez -- \\
+        David Javier Zegarra Florez -- 202213173 \\
     \end{flushright}
     
     \input{Secciones/Primero}
+
     
 \end{document}

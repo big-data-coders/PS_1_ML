@@ -3,6 +3,7 @@
 # dada inicialmente.
 # Nota. Es recomendable transformar la variable dependiente en su versión
 # logarítmica por fuera de la función `recipe` para evitar errores.
+source(paste0(directorioCodigo, '01_data.R'), encoding = 'UTF-8')
 dataset_split    <- initial_split(data = dataset,
                                   prop = 0.7, 
                                   strata = num_salarioHora)

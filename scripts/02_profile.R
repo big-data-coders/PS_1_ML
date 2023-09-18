@@ -30,8 +30,8 @@ eta_peak<-function(data,index){
 
 eta_peak(dataset,1:nrow(dataset))
 
-set.seed(666)
-library(boot)
+#set.seed(666)
+#library(boot)
 valores <- boot(dataset, eta_peak, R = 2000) 
 
 valores
@@ -46,13 +46,13 @@ ruta_grafico <- file.path(directorioResultados, "perfil_ingresos_vs_edad.png")
 png(filename = ruta_grafico, width = 800, height = 600)  # Ajusta el ancho y alto según tus preferencias
 
 # Creo el gráfico
-plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
+plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", col =  alpha("grey", 0.8), main = "Perfil de Ingresos vs. Edad")
 lines(edades, predicciones, col = "red", lwd = 2)  # Línea de predicciones
 
 # Añadir líneas verticales
 abline(v = 45.31037, col = "blue", lwd = 2, lty = 2)  # Línea para el valor central (estilo de línea discontinua)
-abline(v = quantile(valores$t[,1], 0.025), col = "orange", lwd = 2, lty = 3) # Línea para el límite inferior (estilo de línea punteada)
-abline(v = quantile(valores$t[,1], 0.975), col = "green", lwd = 2, lty = 3) # Línea para el límite superior (estilo de línea punteada)
+abline(v = quantile(valores$t[,1], 0.025), col = "blue", lwd = 2, lty = 3) # Línea para el límite inferior (estilo de línea punteada)
+abline(v = quantile(valores$t[,1], 0.975), col = "blue", lwd = 2, lty = 3) # Línea para el límite superior (estilo de línea punteada)
 
 # Cerrar el dispositivo gráfico PNG
 dev.off()

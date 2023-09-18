@@ -4,20 +4,12 @@ reg31 <- lm(log(num_salarioHora) ~ num_edad + I(num_edad^2), data = dataset)
 stargazer(reg31, type="tex", digits=3) 
 stargazer(reg31, digits=3, align=TRUE, type="latex", out="views/4reg2.tex", omit.stat=c("adj.rsq", "f", "ser"))
 
-
 ## utilizo el método del ploteo del perfil de ingresos, donde utilizo los coeficientes estimados para trazar el perfil de ingresos en funcion de la edad. 
 #primero creo un conjunto de edades para las cuales se desea hacer predicciones 
 #luego utilizo los coeficientes estimados 
 
 edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia de edades
 predicciones <- predict(reg31, newdata = data.frame(num_edad=edades))  # Predicciones
-
-
-#Boostrap
-
-install.packages("boot")
-library(boot)
-
 
 #Peak Age
 eta_peak<-function(data,index){

@@ -1,3 +1,10 @@
+#packages
+require("pacman")
+library(fastDummies)
+p_load("tidyverse","stargazer")
+
+glimpse(dataset)
+
 #Tabla con estadísticas descriptivas
 stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Included in the Selected Data Set")
 
@@ -16,7 +23,7 @@ dataset<-dataset %>% mutate(sexResid=lm(as.numeric(cat_sexo)~cat_posicion+cat_oc
 dataset<-dataset %>% mutate(logyResid=lm(log(num_salarioHora)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of logy~x 
 reg3<-lm(logyResid~sexResid,dataset)
 stargazer(reg3,type="text",digits=3 ) 
-stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3.tex" , omit.stat = c("adj.rsq", "f", "ser"))
+stargazer(reg3, reg1 , digits=3, align=TRUE, type="latex", out="views/4reg3.tex" , omit.stat = c("adj.rsq", "f", "ser"))
 
 #Acá me surge la duda de si por cada iteración deberían cambiar las columnas de los errores o se usan las que ya tengo como estoy haciendo
 eta_fn<-function(data,index){
@@ -97,3 +104,18 @@ legend("topright",                    # posición de la leyenda
 
 # cerrar el dispositivo gráfico PNG
 dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,7 +9,7 @@ graphics.off()
 set.seed(123)                       # Replicabilidad en las simulaciones.
 
 # 1.1| Librerias ----------------------------------------------------------
-librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'gt', 
+librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'gt', 'boot',
                   'conflicted', 'rvest', 'xtable', 'stargazer', 'fastDummies')
 noInstaladas <- librerias[!(librerias %in% rownames(installed.packages()))]
 

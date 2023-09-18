@@ -12,13 +12,6 @@ stargazer(reg31, digits=3, align=TRUE, type="latex", out="views/4reg2.tex", omit
 edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia de edades
 predicciones <- predict(modelo, newdata = data.frame(num_edad=edades))  # Predicciones
 
-
-#Boostrap
-
-install.packages("boot")
-library(boot)
-
-
 #Peak Age
 eta_peak<-function(data,index){
   coefficients <- coef(lm(log(num_salarioHora)~ num_edad + I(num_edad^2), data = data, subset = index))#returns the second coefficient of the linear regression

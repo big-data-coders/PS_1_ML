@@ -9,8 +9,8 @@ graphics.off()
 set.seed(123)                       # Replicabilidad en las simulaciones.
 
 # 1.1| Librerias ----------------------------------------------------------
-librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'conflicted',
-                  'rvest')
+librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'gt', 
+                  'conflicted', 'rvest', 'xtable')
 noInstaladas <- librerias[!(librerias %in% rownames(installed.packages()))]
 
 if(length(noInstaladas)){
@@ -38,3 +38,6 @@ setwd(directorioPrincipal)
 # Dado que el proceso es demorado se recomienda definir el parámetro en FALSE.
 primeraVez <- FALSE
 source(paste0(directorioCodigo, '01_data.R'), encoding = 'UTF-8')
+source(paste0(directorioCodigo, '02_profile.R'), encoding = 'UTF-8')
+source(paste0(directorioCodigo, '03_gap.R'), encoding = 'UTF-8')
+source(paste0(directorioCodigo, '04_forecast.R'), encoding = 'UTF-8')

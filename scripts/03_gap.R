@@ -10,20 +10,20 @@ stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Includ
 
 #a) 
 reg1<-lm(log(num_salarioHora) ~ cat_sexo, data = dataset)
-stargazer(reg1, type="text", digits=3) 
-stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1.tex")
+stargazer(reg1, type="text", digits=3 ) 
+stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1.tex" , omit.stat = c("adj.rsq", "f", "ser"))
 
 #b) 
 reg2<-lm(log(num_salarioHora) ~ cat_sexo+cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad, data = dataset)
-stargazer(reg2,type="text",digits=3)
+stargazer(reg2,type="text",digits=3 , omit.stat = c("adj.rsq", "f", "ser")) 
 summary(reg2)
 
 #FWL: 
 dataset<-dataset %>% mutate(sexResid=lm(as.numeric(cat_sexo)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of sex~x 
 dataset<-dataset %>% mutate(logyResid=lm(log(num_salarioHora)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of logy~x 
 reg3<-lm(logyResid~sexResid,dataset)
-stargazer(reg3,type="text",digits=3) 
-stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3.tex")
+stargazer(reg3,type="text",digits=3 ) 
+stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3.tex" , omit.stat = c("adj.rsq", "f", "ser"))
 
 #Boostrap
 

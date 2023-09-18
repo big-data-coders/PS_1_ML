@@ -100,6 +100,14 @@ dataset <- dataset |>
 dataset <- dataset |> 
   select(c(starts_with('id_'), starts_with('cat_'), starts_with('num_')))
 
+# Orden de las observaciones en variables relevantes
+dataset <- dataset  |> 
+  mutate(cat_educacion = factor(cat_educacion, levels = c('Ninguno', 'Primaria',
+                                                          'Secundaria', 'Bachillerato', 'Superior'))) |> 
+  mutate(cat_estrato = factor(cat_estrato, levels = c('Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco', 'Seis'))) |> 
+  mutate(cat_posicion = factor(cat_posicion, levels = c('Jefa o jefe del hogar', 'Pareja de la cabeza del hogar',
+                                                      'Descendiente de la cabeza del hogar', 'Otro'))) 
+
 # 3| Exportar estadística descriptiva -------------------------------------
 tbl <- dataset |> 
   select(c(starts_with('cat_'), starts_with('num_'))) |> 
@@ -117,14 +125,15 @@ tbl <- dataset |>
               statistic = list(all_continuous() ~ c("{mean} ({sd})",
                                                     "({min}, {max})"),
                                all_categorical() ~ "{n}  ({p}%)"),  #  / {N}
-              missing_text = "(Valores faltantes)") |> 
+              missing_text = "(Valores faltantes)", sort= all_categorical() ~ "alphanumeric"  ) |> 
   add_stat_label(label = list(all_categorical() ~ "",
                               all_continuous() ~ c("Promedio (Desviación std)",
                                                    "Mínimo y máximo"))) |> 
   modify_header(label = "**Variable**") |> 
   bold_labels() 
 
-
+tbl
 gtsave(as_gt(tbl), filename="stores/tab2.tex")
   
+# Agregar gráfica de salario. Distribución con o sin media
 

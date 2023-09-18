@@ -1,4 +1,5 @@
 
+
 ## corrección  de código 
 ## 1. estimacion de los coeficientes 
 
@@ -76,41 +77,6 @@ tbl_regression(reg31) %>%
 
 
 
-
-
-#estat describ
-
-#summary(dataset)
-
-#num filas / columnas 
-
-#num_filas <- nrow(dataset)
-#num_columnas <- nrow(dataset)
-
-#resultado 
-
-#print(paste("numero de filas", num_filas))
-#print(paste("numero de columnas", num_columnas))
-
-
-
-#
-
-
-
-
-
-
-
-
-
-
-#Restringir variable age en los datos apartir de 18 años 
-
-#install.packages("dplyr")
-#library(dplyr)
-
-#dataset_filtrado <- dataset %>% filter (age >=18)
 
 
 

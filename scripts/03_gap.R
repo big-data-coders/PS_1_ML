@@ -11,7 +11,7 @@ stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Includ
 #a) 
 reg1<-lm(log(num_salarioHora) ~ cat_sexo, data = dataset)
 stargazer(reg1, type="text", digits=3) 
-stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1")
+stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1.tex")
 
 #b) 
 reg2<-lm(log(num_salarioHora) ~ cat_sexo+cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad, data = dataset)
@@ -23,7 +23,7 @@ dataset<-dataset %>% mutate(sexResid=lm(as.numeric(cat_sexo)~cat_posicion+cat_oc
 dataset<-dataset %>% mutate(logyResid=lm(log(num_salarioHora)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of logy~x 
 reg3<-lm(logyResid~sexResid,dataset)
 stargazer(reg3,type="text",digits=3) 
-stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3")
+stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3.tex")
 
 #Boostrap
 
@@ -38,11 +38,9 @@ eta_fn<-function(data,index){
 
 eta_fn(dataset,1:nrow(dataset))
 
-set.seed(666)
 boot(dataset, eta_fn, R = 2000) 
 
 
-#TERCERO
 ## 1. estimacion de los coeficientes 
 
 modelo0 <- lm(log(num_salarioHora) ~ num_edad + I(num_edad^2), data = dataset, subset = (cat_sexo == "Hombre"))
@@ -57,10 +55,6 @@ edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia
 predicciones0 <- predict(modelo0, newdata = data.frame(num_edad=edades))  # Predicciones
 predicciones1 <- predict(modelo1, newdata = data.frame(num_edad=edades))  # Predicciones
 
-# Gráfico del perfil de ingresos
-plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
-lines(edades, predicciones1, col = "red", lwd = 1)  # Línea de predicciones
-lines(edades, predicciones0, col = "blue", lwd = 1)  # Línea de predicciones
 
 #Boostrap
 
@@ -79,7 +73,6 @@ eta_peak<-function(data,index){
 
 #Para los hombres
 eta_peak(dataset0,1:nrow(dataset0))
-set.seed(666)
 valores0 <- boot(dataset0, eta_peak, R = 2000) 
 valores0
 quantile(valores0$t[,1], 0.025)
@@ -87,7 +80,6 @@ quantile(valores0$t[,1], 0.975)
 
 #Para las mujeres
 eta_peak(dataset1,1:nrow(dataset1))
-set.seed(666)
 valores1 <- boot(dataset1, eta_peak, R = 2000) 
 valores1
 quantile(valores1$t[,1], 0.025)

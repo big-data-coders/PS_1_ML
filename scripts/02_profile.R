@@ -1,10 +1,5 @@
-
-
 ## corrección  de código 
 ## 1. estimacion de los coeficientes 
-
-install.packages("stargazer")
-library(stargazer)
 reg31 <- lm(log(num_salarioHora) ~ num_edad + I(num_edad^2), data = dataset)
 stargazer(reg31, type="tex", digits=3) 
 stargazer(reg31, digits=3, align=TRUE, type="latex", out="views/4reg2.tex", omit.stat=c("adj.rsq", "f", "ser"))
@@ -61,31 +56,3 @@ abline(v = quantile(valores$t[,1], 0.975), col = "green", lwd = 2, lty = 3) # L�
 
 # Cerrar el dispositivo gráfico PNG
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

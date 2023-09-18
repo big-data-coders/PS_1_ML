@@ -10,7 +10,7 @@ set.seed(123)                       # Replicabilidad en las simulaciones.
 
 # 1.1| Librerias ----------------------------------------------------------
 librerias    <- c('here', 'tidyverse', 'tidymodels', 'gtsummary', 'gt', 
-                  'conflicted', 'rvest', 'xtable')
+                  'conflicted', 'rvest', 'xtable', 'stargazer')
 noInstaladas <- librerias[!(librerias %in% rownames(installed.packages()))]
 
 if(length(noInstaladas)){

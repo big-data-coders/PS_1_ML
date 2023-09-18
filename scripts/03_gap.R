@@ -130,30 +130,3 @@ mtext("Lineas verticales continuas: Peak ages para cada sexo. Lineas verticales 
 
 
 
-
-#####----------------------------------
-#c)
-#Primero guardo mi predicted wage:
-
-lm_summary < summary(reg1)$coefficients
-
-coefs = dataset.frame(
-  Features = rownames(lm_summary),
-  Estimate = lm_summary[,'Estimate'],
-  std_error = lm_summary[, 'Std. Error']
-)
-
-alpha = 0.05 #95% confidence interval
-coefs$lower = coefs$Estimate - qnorma
-
-
-ggplot(dataset, aes(x = age, y = predicted_wage, color = gender)) +
-  geom_line() +
-  labs(title = "Predicted Age-Wage Profile by Gender", x = "Age", y = "Predicted Wage") +
-  theme_minimal()
-
-
-
-
-
-

@@ -11,7 +11,7 @@ stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Includ
 #a) 
 reg1<-lm(log(num_salarioHora) ~ cat_sexo, data = dataset)
 stargazer(reg1, type="text", digits=3) 
-stargazer(reg1, digits=3, align=TRUE, type="latex", out="4reg1")
+stargazer(reg1, digits=3, align=TRUE, type="latex", out="views/4reg1")
 
 #b) 
 reg2<-lm(log(num_salarioHora) ~ cat_sexo+cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad, data = dataset)
@@ -23,7 +23,7 @@ dataset<-dataset %>% mutate(sexResid=lm(as.numeric(cat_sexo)~cat_posicion+cat_oc
 dataset<-dataset %>% mutate(logyResid=lm(log(num_salarioHora)~cat_posicion+cat_ocupacion+cat_estrato+cat_formalidad+cat_empresa+cat_educacion+num_edad,dataset)$residuals) #Residuals of logy~x 
 reg3<-lm(logyResid~sexResid,dataset)
 stargazer(reg3,type="text",digits=3) 
-stargazer(reg3, digits=3, align=TRUE, type="latex", out="4reg3")
+stargazer(reg3, digits=3, align=TRUE, type="latex", out="views/4reg3")
 
 #Boostrap
 
@@ -86,15 +86,21 @@ quantile(valores0$t[,1], 0.025)
 quantile(valores0$t[,1], 0.975)
 
 #Para las mujeres
-eta_peak1(dataset1,1:nrow(dataset1))
+eta_peak(dataset1,1:nrow(dataset1))
 set.seed(666)
 valores1 <- boot(dataset1, eta_peak, R = 2000) 
 valores1
 quantile(valores1$t[,1], 0.025)
 quantile(valores1$t[,1], 0.975)
 
+#------------------------------------
+# ruta del gráfico
+graph_dt <- file.path(directorioResultados, "earnings_gen_gap.png")
+# establezco dispositivo gráfico
+png(filename = graph_dt ,width = 800, height = 600 )
+
 # Gráfico del perfil de ingresos
-plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad por sexo")
+plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", col =  alpha("grey", 0.8), main = "Perfil de Ingresos vs. Edad por sexo")
 lines(edades, predicciones1, col = "red", lwd = 1)  # Línea de predicciones
 lines(edades, predicciones0, col = "blue", lwd = 1)  # Línea de predicciones
 # Añadir líneas verticales
@@ -111,10 +117,10 @@ legend("topright",                    # posición de la leyenda
        lwd = 1,                       # grosor de las líneas en la leyenda
        bg = "white")                  # color de fondo de la leyenda
 # Agregar pie de página
-mtext("Lineas verticales continuas: Peak ages para cada sexo. Lineas verticales punteadas: Intervalos de confianza.", side = 1, line = 3.8, adj = 0, cex = 0.6)
+#mtext("Lineas verticales continuas: Peak ages para cada sexo. Lineas verticales punteadas: Intervalos de confianza.", side = 1, line = 3.8, adj = 0, cex = 0.6)
 
-
-
+# cerrar el dispositivo gráfico PNG
+dev.off()
 
 
 

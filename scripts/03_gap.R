@@ -1,10 +1,3 @@
-#packages
-require("pacman")
-library(fastDummies)
-p_load("tidyverse","stargazer")
-
-glimpse(dataset)
-
 #Tabla con estadísticas descriptivas
 stargazer(data.frame(dataset), header=FALSE, type='text',title="Variables Included in the Selected Data Set")
 
@@ -113,18 +106,3 @@ legend("topright",                    # posición de la leyenda
 
 # cerrar el dispositivo gráfico PNG
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

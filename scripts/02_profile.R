@@ -10,7 +10,7 @@ stargazer(reg31, digits=3, align=TRUE, type="latex", out="views/4reg2.tex", omit
 #luego utilizo los coeficientes estimados 
 
 edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia de edades
-predicciones <- predict(modelo, newdata = data.frame(num_edad=edades))  # Predicciones
+predicciones <- predict(reg31, newdata = data.frame(num_edad=edades))  # Predicciones
 
 
 #Boostrap

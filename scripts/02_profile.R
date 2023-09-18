@@ -6,8 +6,8 @@
 install.packages("stargazer")
 library(stargazer)
 reg31 <- lm(log(num_salarioHora) ~ num_edad + I(num_edad^2), data = dataset)
-stargazer(reg31, type="text", digits=3) 
-stargazer(reg31, digits=3, align=TRUE, type="latex", out="4reg1")
+stargazer(reg31, type="tex", digits=3) 
+stargazer(reg31, digits=3, align=TRUE, type="latex", out="views/4reg2.tex")
 
 ## utilizo el método del ploteo del perfil de ingresos, donde utilizo los coeficientes estimados para trazar el perfil de ingresos en funcion de la edad. 
 #primero creo un conjunto de edades para las cuales se desea hacer predicciones 
@@ -15,10 +15,6 @@ stargazer(reg31, digits=3, align=TRUE, type="latex", out="4reg1")
 
 edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia de edades
 predicciones <- predict(modelo, newdata = data.frame(num_edad=edades))  # Predicciones
-
-# Gráfico del perfil de ingresos
-plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
-lines(edades, predicciones, col = "red", lwd = 2)  # Línea de predicciones
 
 
 #Boostrap
@@ -47,13 +43,33 @@ quantile(valores$t[,1], 0.025)
 quantile(valores$t[,1], 0.975)
 
 
-# Gráfico del perfil de ingresos
+# la ruta completa del archivo de destino en la carpeta "views"
+ruta_grafico <- file.path(directorioResultados, "perfil_ingresos_vs_edad.png")
+
+# Establezco el dispositivo gráfico PNG
+png(filename = ruta_grafico, width = 800, height = 600)  # Ajusta el ancho y alto según tus preferencias
+
+# Creo el gráfico
 plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
 lines(edades, predicciones, col = "red", lwd = 2)  # Línea de predicciones
+
 # Añadir líneas verticales
 abline(v = 45.31037, col = "blue", lwd = 2, lty = 2)  # Línea para el valor central (estilo de línea discontinua)
 abline(v = quantile(valores$t[,1], 0.025), col = "yellow", lwd = 2, lty = 3) # Línea para el límite inferior (estilo de línea punteada)
 abline(v = quantile(valores$t[,1], 0.975), col = "green", lwd = 2, lty = 3) # Línea para el límite superior (estilo de línea punteada)
+
+# Cerrar el dispositivo gráfico PNG
+dev.off()
+
+
+
+
+
+
+
+
+
+
 
 ## Presentacion de resultados 
 

@@ -1,48 +1,71 @@
 
-# 1| Web scrapping --------------------------------------------------------
-# De la página de Ignacio se extrae las diez tablas y se concatenan por filas. 
-install.packages("rvest")
-library(rvest)
+## corrección  de código 
+## 1. estimacion de los coeficientes 
 
-if (primeraVez <- TRUE) {
-  link <- paste0(
-    "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_", 1:10, ".html"
-  )
-  
-  dataset <- data.frame()
-  for (url in link) {
-    print(url)
-    table0 <- read_html(url) %>%  html_table() 
-    table0 <- as.data.frame(table0[[1]])
-    dataset <- rbind(dataset, table0)
-  }
-  
-  write.csv(x = dataset, file = paste0(Directoriodatos, 'dataframe.csv'), 
-            row.names = FALSE)
-} else {
-  dataset <- read.csv(file = paste0(Directoriodatos, 'dataframe.csv'))
+install.packages("stargazer")
+library(stargazer)
+reg31 <- lm(log(num_salarioHora) ~ num_edad + I(num_edad^2), data = dataset)
+stargazer(reg31, type="text", digits=3) 
+stargazer(reg31, digits=3, align=TRUE, type="latex", out="4reg1")
+
+## utilizo el método del ploteo del perfil de ingresos, donde utilizo los coeficientes estimados para trazar el perfil de ingresos en funcion de la edad. 
+#primero creo un conjunto de edades para las cuales se desea hacer predicciones 
+#luego utilizo los coeficientes estimados 
+
+edades <- seq(min(dataset$num_edad), max(dataset$num_edad), by = 1)  # Secuencia de edades
+predicciones <- predict(modelo, newdata = data.frame(num_edad=edades))  # Predicciones
+
+# Gráfico del perfil de ingresos
+plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
+lines(edades, predicciones, col = "red", lwd = 2)  # Línea de predicciones
+
+
+#Boostrap
+
+install.packages("boot")
+library(boot)
+
+
+#Peak Age
+eta_peak<-function(data,index){
+  coefficients <- coef(lm(log(num_salarioHora)~ num_edad + I(num_edad^2), data = data, subset = index))#returns the second coefficient of the linear regression
+  coef2 <- coefficients[2]
+  coef3 <- coefficients[3]
+  coef_peak <- -(coef2/(2*coef3))
+  return(coef_peak)
 }
 
-___________________________________________________________________________________________________________________________________
+eta_peak(dataset,1:nrow(dataset))
 
-#comienzo por observar los datos instalando de igual fomra paquetes para ello 
+set.seed(666)
+library(boot)
+valores <- boot(dataset, eta_peak, R = 2000) 
 
-install.packages("skimr")
-library(skimr)
+valores
+quantile(valores$t[,1], 0.025)
+quantile(valores$t[,1], 0.975)
 
-dataset%>%head()
 
-names(dataset)
-str(dataset)
-summary(dataset)
-# vista previa de los datos 
+# Gráfico del perfil de ingresos
+plot(dataset$num_edad, log(dataset$num_salarioHora), xlab = "Edad", ylab = "log(Ingresos)", main = "Perfil de Ingresos vs. Edad")
+lines(edades, predicciones, col = "red", lwd = 2)  # Línea de predicciones
+# Añadir líneas verticales
+abline(v = 45.31037, col = "blue", lwd = 2, lty = 2)  # Línea para el valor central (estilo de línea discontinua)
+abline(v = quantile(valores$t[,1], 0.025), col = "yellow", lwd = 2, lty = 3) # Línea para el límite inferior (estilo de línea punteada)
+abline(v = quantile(valores$t[,1], 0.975), col = "green", lwd = 2, lty = 3) # Línea para el límite superior (estilo de línea punteada)
 
-------------------------------------------------------------------------------------------------------------------------------------
-#detectar valores nulos y numero de datos nulos 
-  
-colSums(is.na(dataset))
-total_na <- sum(is.na(dataset))
-print(total_na)
+## Presentacion de resultados 
+
+library(gtsummary)
+
+tbl_regression(reg31) %>%
+  add_glance_table() %>%
+  modify_header(label = "**Variable**")  # Personaliza el encabezado si es necesario
+
+
+
+
+
 
 
 
